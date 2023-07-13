@@ -30,7 +30,7 @@ trait BasicAuthentication extends algebra.BasicAuthentication with EndpointsWith
     val authHeader: RequestHeaders[Option[Credentials]] =
       httpHeaders =>
         Valid(
-          httpHeaders.header[Authorization].flatMap {
+          httpHeaders.header[Authorization|Null].flatMap {
             case Authorization(BasicHttpCredentials(username, password)) =>
               Some(Credentials(username, password))
             case _ => None
