@@ -66,7 +66,7 @@ trait ChunkedJsonEntities
   def jsonChunksRequest[A](implicit
       codec: JsonCodec[A]
   ): RequestEntity[Chunks[A]] = {
-    val encoder = stringCodec(codec)
+    val encoder = stringCodec(using codec)
     chunkedRequestEntity(
       ContentTypes.`application/json`,
       a => ByteString.fromString(encoder.encode(a))
@@ -76,7 +76,7 @@ trait ChunkedJsonEntities
   def jsonChunksResponse[A](implicit
       codec: JsonCodec[A]
   ): ResponseEntity[Chunks[A]] = {
-    val decoder = stringCodec(codec)
+    val decoder = stringCodec(using codec)
     chunkedResponseEntity { byteString =>
       val string = byteString.utf8String
       decoder

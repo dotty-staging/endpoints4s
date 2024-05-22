@@ -13,10 +13,10 @@ import play.api.http.{ContentTypes, Writeable}
 trait JsonEntitiesFromCodecs extends algebra.JsonEntitiesFromCodecs with EndpointsWithCustomErrors {
 
   def jsonRequest[A](implicit codec: JsonCodec[A]): RequestEntity[A] =
-    JsonEntities.decodeRequest(this)(stringCodec(codec))
+    JsonEntities.decodeRequest(this)(stringCodec(using codec))
 
   def jsonResponse[A](implicit codec: JsonCodec[A]): ResponseEntity[A] =
-    responseEntityFromWriteable(JsonEntities.encodeResponse(stringCodec(codec)))
+    responseEntityFromWriteable(JsonEntities.encodeResponse(stringCodec(using codec)))
 
 }
 

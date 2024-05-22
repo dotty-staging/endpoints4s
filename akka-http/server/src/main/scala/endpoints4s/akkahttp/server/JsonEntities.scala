@@ -39,10 +39,10 @@ trait JsonEntities extends algebra.JsonEntities with EndpointsWithCustomErrors {
 trait JsonEntitiesFromCodecs extends algebra.JsonEntitiesFromCodecs with EndpointsWithCustomErrors {
 
   def jsonRequest[A](implicit codec: JsonCodec[A]): RequestEntity[A] =
-    JsonEntities.decodeJsonRequest(this)(stringCodec(codec))
+    JsonEntities.decodeJsonRequest(this)(stringCodec(using codec))
 
   def jsonResponse[A](implicit codec: JsonCodec[A]): ResponseEntity[A] =
-    JsonEntities.encodeJsonResponse(stringCodec(codec))
+    JsonEntities.encodeJsonResponse(stringCodec(using codec))
 
 }
 

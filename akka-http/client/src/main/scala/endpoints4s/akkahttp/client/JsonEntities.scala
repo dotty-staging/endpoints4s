@@ -14,13 +14,13 @@ trait JsonEntitiesFromCodecs extends algebra.JsonEntitiesFromCodecs with Endpoin
     req.withEntity(
       HttpEntity(
         ContentTypes.`application/json`,
-        stringCodec(codec).encode(a)
+        stringCodec(using codec).encode(a)
       )
     )
   }
 
   def jsonResponse[A](implicit codec: JsonCodec[A]): ResponseEntity[A] =
-    stringCodecResponse(stringCodec(codec))
+    stringCodecResponse(stringCodec(using codec))
 
 }
 

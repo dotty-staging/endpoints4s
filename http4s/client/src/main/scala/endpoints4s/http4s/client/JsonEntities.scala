@@ -12,12 +12,12 @@ trait JsonEntitiesFromCodecs
   def jsonRequest[A](implicit codec: JsonCodec[A]): RequestEntity[A] =
     (a, request) =>
       request
-        .withEntity(stringCodec(codec).encode(a))
+        .withEntity(stringCodec(using codec).encode(a))
         .withContentType(`Content-Type`(MediaType.application.json))
 
   def jsonResponse[A](implicit codec: JsonCodec[A]): ResponseEntity[A] =
     _.as[String].flatMap(body =>
-      stringCodec(codec)
+      stringCodec(using codec)
         .decode(body)
         .fold(
           effect.pure,

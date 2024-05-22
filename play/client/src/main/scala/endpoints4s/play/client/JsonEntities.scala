@@ -17,12 +17,12 @@ trait JsonEntitiesFromCodecs extends algebra.JsonEntitiesFromCodecs with Endpoin
       (s: String) => InMemoryBody(playCodec.encode(s)),
       ContentTypes.JSON
     )
-    wsRequest.withBody(stringCodec(codec).encode(a))(writable)
+    wsRequest.withBody(stringCodec(using codec).encode(a))(writable)
   }
 
   def jsonResponse[A](implicit codec: JsonCodec[A]): ResponseEntity[A] =
     wsResp =>
-      stringCodec(codec)
+      stringCodec(using codec)
         .decode(wsResp.body)
         .fold(Right(_), errors => Left(new Exception(errors.mkString(". "))))
 
