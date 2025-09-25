@@ -28,14 +28,15 @@ trait BasicAuthentication extends algebra.BasicAuthentication with EndpointsWith
       tuplerUEHCred: Tupler.Aux[UE, HCred, Out]
   ): Request[Out] = new Request[Out] {
     val authHeader: RequestHeaders[Option[Credentials]] =
-      httpHeaders =>
+      httpHeaders => {
         Valid(
-          httpHeaders.header[Authorization].flatMap {
+          httpHeaders.header[Authorization | Null].flatMap {
             case Authorization(BasicHttpCredentials(username, password)) =>
               Some(Credentials(username, password))
             case _ => None
           }
         )
+      }
 
     val headersDirective: Directive1[HCred] =
       // First, handle regular header validation
